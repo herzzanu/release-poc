@@ -33,4 +33,4 @@ jobs:
         run: npm install -g release-it
       
       - name: Release minor version
-        run: release-it minor --ci --'git.commitMessage="v${version}"' --'git.tagAnnotation="v${version}"' --github.release --'github.releaseName="v${version}"' --github.autoGenerate
+        run: release-it minor --ci --'git.commitMessage="v${version}"' --'git.tagName="v${version}"' --github.release --'github.releaseName="v${version}"' --github.autoGenerate
