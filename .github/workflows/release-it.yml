@@ -1,0 +1,36 @@
+---
+name: "release-it"
+
+on:
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+jobs:
+  release:
+    name: "Release It"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup git user
+        run: |
+            git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
+            git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+      
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          check-latest: true
+      
+      - name: Install latest npm
+        run: npm install -g npm
+      
+      - name: Install release-it
+        run: npm install -g release-it
+      
+      - name: Release minor version
+        run: release-it minor --ci --'git.commitMessage="v${version}"' --'git.tagAnnotation="v${version}"' --github.release --'github.releaseName="v${version}"' --github.autoGenerate
